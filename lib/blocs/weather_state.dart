@@ -20,5 +20,5 @@ class CurrentWeatherState extends WeatherState {
   CurrentWeatherState(this.weather);
 
   @override
-  List<Object?> get props => [weather.time];
+  List<Object?> get props => [weather.time, weather.latitude, weather.longitude];
 }

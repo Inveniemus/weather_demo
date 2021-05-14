@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_demo/utils/api_debug_widget.dart';
 
 import '../buttons/settings_button.dart';
 import '../blocs/weather_bloc.dart';
@@ -21,18 +22,7 @@ class WeatherDemoHome extends StatelessWidget {
           SettingsButton(),
         ],
       ),
-      body: Column(
-        children: [
-          BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
-            if (state is UnknownWeatherState) {
-              return Text('?');
-            } else if (state is CurrentWeatherState) {
-              return Text(state.weather.feelsLikeTemperature.toString());
-            }
-            return Text('?');
-          }),
-        ],
-      ),
+      body: OpenWeatherApiDebugWidget(),
     );
   }
 }

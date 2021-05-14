@@ -63,6 +63,16 @@ void main() {
       expect(aRealWeather.seaLevelPressure, 1011);
       expect(aRealWeather.groundLevelPressure, 961);
       expect(aRealWeather.humidity, 58);
+      expect(aRealWeather.visibility, 10000);
+      expect(aRealWeather.cloudiness, 28);
+      expect(aRealWeather.windDirection, 341);
+      expect(aRealWeather.windSpeed, 6.42);
+      expect(aRealWeather.windGust, 9.22);
+      expect(aRealWeather.conditionCode, 802);
+      expect(aRealWeather.conditionMain, 'Clouds');
+      expect(aRealWeather.conditionDescription, 'scattered clouds');
+      expect(aRealWeather.windSpeed, 6.42);
+      expect(aRealWeather.windGust, 9.22);
     });
   });
 }
