@@ -1,3 +1,5 @@
+import 'package:weather_demo/utils/numbers.dart';
+
 class Weather {
 
   // Calculation Time
@@ -55,10 +57,10 @@ class Weather {
     }
     if (data.containsKey('main')) {
       if (data['main'].containsKey('temp')) {
-        temperature = data['main']['temp'] - 273.15;
+        temperature = roundDouble(data['main']['temp'] - 273.15, 1);
       }
       if (data['main'].containsKey('feels_like')) {
-        feelsLikeTemperature = data['main']['feels_like'] - 273.15;
+        feelsLikeTemperature = roundDouble(data['main']['feels_like'] - 273.15, 1);
       }
       if (data['main'].containsKey('pressure')) {
         pressure = data['main']['pressure'];
