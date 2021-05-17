@@ -154,7 +154,8 @@ class _WeatherData extends StatelessWidget {
     widgets.add(_ApiValueItem('near:', weather.cityName));
     widgets.add(_ApiValueItem('Time stamp:', weather.time));
     widgets.add(Divider());
-    widgets.add(_ApiValueItem('Weather main condition:', weather.conditionMain));
+    widgets.add(_ApiValueItem('Weather main condition:', weather.conditionMain,
+        _getWeatherMainConditionImage(weather.conditionMain, weather.conditionDescription)));
     widgets.add(_ApiValueItem('Weather description:', weather.conditionDescription));
     widgets.add(Divider());
     widgets.add(_ApiValueItem('Temperature:', weather.temperature));
@@ -171,17 +172,55 @@ class _WeatherData extends StatelessWidget {
 
     return widgets;
   }
+
+  Image _getWeatherMainConditionImage(String? condition, String? description) {
+    switch (condition) {
+      case 'Clear':
+        return Image(image: AssetImage('graphics/weather_images/039-sun.png'),);
+      case 'few clouds':
+        return Image(image: AssetImage('graphics/weather_images/038-cloudy-3.png'),);
+      case 'scattered clouds':
+        return Image(image: AssetImage('graphics/weather_images/038-cloudy-3.png'),);
+      case 'Clouds':
+        switch (description) {
+          case 'few clouds':
+            return Image(image: AssetImage('graphics/weather_images/038-cloudy-3.png'),);
+          case 'scattered clouds':
+            return Image(image: AssetImage('graphics/weather_images/038-cloudy-3.png'),);
+          case 'broken clouds':
+            return Image(image: AssetImage('graphics/weather_images/001-cloud.png'),);
+          case 'overcast clouds':
+            return Image(image: AssetImage('graphics/weather_images/011-cloud.png'),);
+          default:
+            return Image(image: AssetImage('graphics/weather_images/001-cloud.png'),);
+        }
+      case 'Rain':
+        return Image(image: AssetImage('graphics/weather_images/004-rainy-1.png'),);
+      case 'Drizzle':
+        return Image(image: AssetImage('graphics/weather_images/003-rainy.png'),);
+      case 'Thunderstorm':
+        return Image(image: AssetImage('graphics/weather_images/008-storm.png'),);
+      case 'Snow':
+        return Image(image: AssetImage('graphics/weather_images/006-snowy.png'),);
+      case 'mist':
+        return Image(image: AssetImage('graphics/weather_images/050-windy-3.png'),);
+      default:
+        return Image(image: AssetImage('graphics/weather_images/039-sun.png'),);
+    }
+  }
 }
 
 class _ApiValueItem extends StatelessWidget {
   final String fieldPath;
   final dynamic value;
+  final Image? _image;
 
-  _ApiValueItem(this.fieldPath, this.value);
+  _ApiValueItem(this.fieldPath, this.value, [this._image]);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: _image,
       title: Text(fieldPath),
       trailing: Text((value ?? 'NONE').toString()),
     );
