@@ -10,12 +10,20 @@ class SettingsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text('Settings'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [ThemeColorSettingItem()],
-          ),
-        ));
+        body: SettingsBody(),
+    );
+  }
+}
+
+class SettingsBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [ThemeColorSettingItem()],
+      ),
+    );
   }
 }
 
