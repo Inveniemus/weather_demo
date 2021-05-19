@@ -11,4 +11,8 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
   void setDefault() {
     state = ThemeData(primaryColor: Colors.blue);
   }
+
+  void dark() {
+    state = ThemeData.dark();
+  }
 }

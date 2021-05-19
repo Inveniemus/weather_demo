@@ -18,44 +18,54 @@ class WeatherDemoHome extends StatelessWidget {
           .add(CurrentWeatherRequest(44.4, 5.08));
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text('Weather Demo')),
-      ),
-      body: BlocBuilder<NavigationBloc, NavigationState>(
-        builder: (context, state) {
-          if (state is NavToSettings) {
-            return SettingsBody();
-          } else if (state is NavToApiDebug) {
-            return OpenWeatherApiDebugWidget();
-          }
-          return CurrentWeatherWidget();
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: 'Current Weather'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_tree_outlined), label: 'API Debug'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-        ],
-        onTap: (int index) {
-          switch (index) {
-            case 1:
-              BlocProvider.of<NavigationBloc>(context).add(CurrentWeatherNavEvent());
-              break;
-            case 2:
-              BlocProvider.of<NavigationBloc>(context).add(ApiDebugNavEvent());
-              break;
-            case 3:
-              BlocProvider.of<NavigationBloc>(context).add(SettingsNavEvent());
-              break;
-            default:
-              BlocProvider.of<NavigationBloc>(context).add(LandingNavEvent());
-          }
-        },
-      ),
-    );
+    int _getCurrentIndex(NavigationState state) {
+      if (state is NavToCurrentWeather) return 1;
+      if (state is NavToApiDebug) return 2;
+      if (state is NavToSettings) return 3;
+      return 0;
+    }
+
+    Widget _selectWidget(NavigationState state) {
+      if (state is NavToCurrentWeather) return CurrentWeatherWidget();
+      if (state is NavToApiDebug) return OpenWeatherApiDebugWidget();
+      if (state is NavToSettings) return SettingsBody();
+      return CurrentWeatherWidget();
+    }
+
+    return BlocBuilder<NavigationBloc, NavigationState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Center(child: Text('Weather Demo')),
+          ),
+          body: _selectWidget(state),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.blueGrey,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _getCurrentIndex(state),
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: 'Current Weather'),
+              BottomNavigationBarItem(icon: Icon(Icons.account_tree_outlined), label: 'API Debug'),
+              BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+            ],
+            onTap: (int index) {
+              switch (index) {
+                case 1:
+                  BlocProvider.of<NavigationBloc>(context).add(CurrentWeatherNavEvent());
+                  break;
+                case 2:
+                  BlocProvider.of<NavigationBloc>(context).add(ApiDebugNavEvent());
+                  break;
+                case 3:
+                  BlocProvider.of<NavigationBloc>(context).add(SettingsNavEvent());
+                  break;
+                default:
+                  BlocProvider.of<NavigationBloc>(context).add(LandingNavEvent());
+              }
+            },
+          ),
+        );
+      });
   }
 }

@@ -47,6 +47,13 @@ class ThemeColorSettingItem extends ConsumerWidget {
           ),
           child: Text(''),
         ),
+        ElevatedButton(
+          onPressed: () => watch(themeProvider.notifier).dark(),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black26,
+          ),
+          child: Text(''),
+        ),
       ],
     );
   }

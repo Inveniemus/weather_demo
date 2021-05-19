@@ -8,12 +8,15 @@ import '../domain/weather.dart';
 class OpenWeatherApiDebugWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: _ExpansionList([
-          {'header': _HeaderTitle('WEATHER DATA:'), 'body': _WeatherData()},
-          {'header': _HeaderTitle('OPENWEATHER API RAW DATA:'), 'body': _ApiRawData()},
-          {'header': _HeaderTitle('RAW MESSAGE:'), 'body': _RawMessage()}
-        ])
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+          child: _ExpansionList([
+            {'header': _HeaderTitle('WEATHER DATA:'), 'body': _WeatherData()},
+            {'header': _HeaderTitle('OPENWEATHER API RAW DATA:'), 'body': _ApiRawData()},
+            {'header': _HeaderTitle('RAW MESSAGE:'), 'body': _RawMessage()}
+          ])
+      ),
     );
   }
 }
