@@ -13,11 +13,6 @@ class WeatherDemoHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      BlocProvider.of<WeatherBloc>(context)
-          .add(CurrentWeatherRequest(44.4, 5.08));
-    });
-
     int _getCurrentIndex(NavigationState state) {
       if (state is NavToCurrentWeather) return 1;
       if (state is NavToApiDebug) return 2;
@@ -45,7 +40,7 @@ class WeatherDemoHome extends StatelessWidget {
             currentIndex: _getCurrentIndex(state),
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: 'Current Weather'),
+              BottomNavigationBarItem(icon: Icon(Icons.wb_sunny), label: 'Current'),
               BottomNavigationBarItem(icon: Icon(Icons.account_tree_outlined), label: 'API Debug'),
               BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
             ],
