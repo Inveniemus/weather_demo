@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/weather_bloc.dart';
+import '../blocs/geolocation_bloc.dart';
 import 'weather_image.dart';
 
 class CurrentWeatherWidget extends StatelessWidget {
@@ -11,22 +12,33 @@ class CurrentWeatherWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      BlocProvider.of<WeatherBloc>(context)
-          .add(CurrentWeatherRequest(44.4, 5.08));
+      BlocProvider.of<GeolocationBloc>(context)
+          .add(LocationRequest());
     });
 
-    return BlocBuilder<WeatherBloc, WeatherState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              UpperWeatherWidget(state),
-              LowerWeatherWidget(state),
-            ],
-          ),
-        );
-      },
+    return SingleChildScrollView(
+      child: BlocListener<GeolocationBloc, GeolocationState>(
+        listener: (context, state) {
+          if (state is PositionState) {
+            BlocProvider.of<WeatherBloc>(context).add(
+              CurrentWeatherRequest(state.position.latitude, state.position.longitude)
+            );
+          }
+        },
+        child: BlocBuilder<WeatherBloc, WeatherState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  UpperWeatherWidget(state),
+                  LowerWeatherWidget(state),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -34,6 +46,7 @@ class CurrentWeatherWidget extends StatelessWidget {
 class UpperWeatherWidget extends StatelessWidget {
 
   final WeatherState _state;
+
   UpperWeatherWidget(this._state);
 
   Widget get _weatherImage {
@@ -54,14 +67,15 @@ class UpperWeatherWidget extends StatelessWidget {
 
   String get _feelsLikeString {
     if (_state is CurrentWeatherState) {
-      return (_state as CurrentWeatherState).weather.feelsLikeTemperature.toString();
+      return (_state as CurrentWeatherState).weather.feelsLikeTemperature
+          .toString();
     } else {
       return '??';
     }
   }
 
   Widget get _windIcon {
-    final icon = Icon(Icons.arrow_right_alt, color: Colors.red,);
+    final icon = Icon(Icons.arrow_right_alt, color: Colors.red, size: 50,);
     if (_state is CurrentWeatherState) {
       final weather = (_state as CurrentWeatherState).weather;
       return Transform.rotate(
@@ -78,7 +92,7 @@ class UpperWeatherWidget extends StatelessWidget {
       final weather = (_state as CurrentWeatherState).weather;
       final kmh = (weather.windSpeed! * 3.6).round();
       final gusts = (weather.windGust! * 3.6).round();
-      return '$kmh km/h\nto: $gusts km/h';
+      return '$kmh km/h\nmax $gusts km/h';
     } else {
       return '??';
     }
@@ -98,11 +112,12 @@ class UpperWeatherWidget extends StatelessWidget {
           Column(
             children: [
               Text('$_temperatureString °C', textScaleFactor: 2,),
-              Text('feels like $_feelsLikeString °C', textScaleFactor: 1.5, style: TextStyle(fontStyle: FontStyle.italic),),
+              Text('feels like $_feelsLikeString °C', textScaleFactor: 1.5,
+                style: TextStyle(fontStyle: FontStyle.italic),),
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.all(8.0),child: _windIcon),
-                  Text(_windSpeed, textAlign: TextAlign.center,),
+                  Padding(padding: EdgeInsets.all(8.0), child: _windIcon),
+                  Text(_windSpeed, textAlign: TextAlign.center, textScaleFactor: 1.5,),
                 ],
               ),
             ],
@@ -116,6 +131,7 @@ class UpperWeatherWidget extends StatelessWidget {
 class LowerWeatherWidget extends StatelessWidget {
 
   final WeatherState _state;
+
   LowerWeatherWidget(this._state);
 
   String _buildString() {

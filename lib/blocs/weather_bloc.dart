@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:weather_demo/domain/weather.dart';
-import 'package:weather_demo/weather_api/openweather_api.dart';
+
+import '../domain/weather.dart';
+import '../weather_api/openweather_api.dart';
 
 part 'weather_event.dart';
+
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
@@ -12,13 +14,17 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   Weather? currentWeather;
   final client = OpenWeatherApiClient();
 
+  WeatherEvent? _previous;
+
   @override
   Stream<WeatherState> mapEventToState(
     WeatherEvent event,
   ) async* {
     if (event is CurrentWeatherRequest) {
-      if (currentWeather == null || (currentWeather!.time != null &&
-          _isMoreThan10MinutesOld(currentWeather!.time!))) {
+      if (currentWeather == null ||
+          _previous != event ||
+          (currentWeather!.time != null &&
+              _isMoreThan10MinutesOld(currentWeather!.time!))) {
         yield FetchingWeatherState();
         final data = await client.getCurrentWeatherAtLatLon(
             event.latitude, event.longitude);
@@ -35,6 +41,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         yield UnknownWeatherState();
       }
     }
+    _previous = event;
   }
 
   bool _isMoreThan10MinutesOld(DateTime time) {

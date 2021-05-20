@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather_demo/domain/weather.dart';
+
+import '../domain/weather.dart';
 
 class WeatherImage extends StatelessWidget {
 

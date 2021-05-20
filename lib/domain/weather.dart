@@ -1,4 +1,4 @@
-import 'package:weather_demo/utils/numbers.dart';
+import '../utils/numbers.dart';
 
 class Weather {
 

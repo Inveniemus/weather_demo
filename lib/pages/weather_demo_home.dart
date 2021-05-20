@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../utils/api_debug_widget.dart';
 import '../blocs/home_navigation_bloc.dart';
 import 'settings_page.dart';
 import '../widgets/current_weather_widget.dart';
-import '../blocs/weather_bloc.dart';
 
 /// Example of BLoC use instead of Stateful widget
 class WeatherDemoHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     int _getCurrentIndex(NavigationState state) {
       if (state is NavToCurrentWeather) return 1;
       if (state is NavToApiDebug) return 2;
