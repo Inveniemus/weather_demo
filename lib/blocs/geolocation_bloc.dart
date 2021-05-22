@@ -22,8 +22,15 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
 
     yield WaitingForPosition();
 
-    if (_serviceEnabled == null) {
-      _serviceEnabled = await Geo.Geolocator.isLocationServiceEnabled();
+    try {
+      if (_serviceEnabled == null) {
+        _serviceEnabled = await Geo.Geolocator.isLocationServiceEnabled();
+      }
+    } on Exception {
+      // On platforms other that iOS and Android
+      // Stop the process and yield Nyons position
+      yield PositionState(Position(44.4, 5.1));
+      return;
     }
 
     if (_serviceEnabled!) {

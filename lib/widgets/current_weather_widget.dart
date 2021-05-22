@@ -90,9 +90,16 @@ class UpperWeatherWidget extends StatelessWidget {
   String get _windSpeed {
     if (_state is CurrentWeatherState) {
       final weather = (_state as CurrentWeatherState).weather;
-      final kmh = (weather.windSpeed! * 3.6).round();
-      final gusts = (weather.windGust! * 3.6).round();
-      return '$kmh km/h\nmax $gusts km/h';
+      String returnString = '';
+      if (weather.windSpeed != null) {
+        final kmh = (weather.windSpeed! * 3.6).round();
+        returnString += '$kmh km/h';
+        if (weather.windGust != null) {
+          final gusts = (weather.windGust! * 3.6).round();
+          returnString += '\nmax $gusts km/h';
+        }
+      }
+      return returnString;
     } else {
       return '??';
     }

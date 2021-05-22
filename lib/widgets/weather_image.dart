@@ -25,7 +25,7 @@ class WeatherImage extends StatelessWidget {
           case 'broken clouds':
             return Image(image: AssetImage('graphics/weather_images/001-cloud.png'),);
           case 'overcast clouds':
-            return Image(image: AssetImage('graphics/weather_images/011-cloud.png'),);
+            return Image(image: AssetImage('graphics/weather_images/011-cloudy.png'),);
           default:
             return Image(image: AssetImage('graphics/weather_images/001-cloud.png'),);
         }
