@@ -157,10 +157,15 @@ class _WeatherData extends StatelessWidget {
     widgets.add(_ApiValueItem('near:', weather.cityName));
     widgets.add(_ApiValueItem('Time stamp:', weather.time));
     widgets.add(Divider());
-    widgets.add(_ApiValueItem('Weather main condition:', weather.conditionMain,
-        _getWeatherMainConditionImage(weather.conditionMain, weather.conditionDescription)));
-    widgets.add(_ApiValueItem('Weather description:', weather.conditionDescription));
-    widgets.add(Divider());
+    if (weather.conditions.isNotEmpty) {
+      weather.conditions.forEach((element) {
+        widgets.add(_ApiValueItem('Weather main condition:', element.conditionMain,
+            _getWeatherMainConditionImage(element.conditionMain, element.conditionDescription)));
+        widgets.add(_ApiValueItem('Weather description:', element.conditionDescription));
+        widgets.add(Divider());
+      });
+    }
+
     widgets.add(_ApiValueItem('Temperature:', weather.temperature));
     widgets.add(_ApiValueItem('Feels like:', weather.feelsLikeTemperature));
     widgets.add(_ApiValueItem('Pressure (sea level):', weather.seaLevelPressure ?? weather.pressure));

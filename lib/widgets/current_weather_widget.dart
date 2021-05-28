@@ -51,7 +51,12 @@ class UpperWeatherWidget extends StatelessWidget {
 
   Widget get _weatherImage {
     if (_state is CurrentWeatherState) {
-      return WeatherImage((_state as CurrentWeatherState).weather);
+      final weather = (_state as CurrentWeatherState).weather;
+      if (weather.conditions.isNotEmpty) {
+        return WeatherImage(weather.conditions.first);
+      } else {
+        return Text('NO WX');
+      }
     } else {
       return CircularProgressIndicator();
     }
@@ -141,7 +146,20 @@ class LowerWeatherWidget extends StatelessWidget {
 
   LowerWeatherWidget(this._state);
 
-  String _buildString() {
+  String _buildWeatherDescription() {
+    String weatherString = 'Weather: ???';
+    if (_state is CurrentWeatherState) {
+      final weather = (_state as CurrentWeatherState).weather;
+      weatherString = 'Weather: ';
+      weather.conditions.forEach((condition) {
+        weatherString += condition.conditionDescription ?? '';
+        weatherString += ', ';
+      });
+    }
+    return weatherString.substring(0, weatherString.length - 2);
+  }
+
+  String _buildLocationString() {
     String near = '???';
     String at = '???';
     if (_state is CurrentWeatherState) {
@@ -159,9 +177,17 @@ class LowerWeatherWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(_buildString(), textScaleFactor: 1.5,),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(_buildWeatherDescription(), textScaleFactor: 1.5,),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(_buildLocationString(), textScaleFactor: 1.5,),
+          ),
+        ],
       ),
     );
   }

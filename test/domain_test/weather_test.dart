@@ -57,8 +57,8 @@ void main() {
     });
 
     test('aRealWeather check', () {
-      expect(aRealWeather.temperature, 288.94 - 273.15);
-      expect(aRealWeather.feelsLikeTemperature, 288.09 - 273.15);
+      expect(aRealWeather.temperature, closeTo(288.94 - 273.15, 0.1));
+      expect(aRealWeather.feelsLikeTemperature, closeTo(288.09 - 273.15, 0.1));
       expect(aRealWeather.pressure, 1011);
       expect(aRealWeather.seaLevelPressure, 1011);
       expect(aRealWeather.groundLevelPressure, 961);
@@ -68,9 +68,9 @@ void main() {
       expect(aRealWeather.windDirection, 341);
       expect(aRealWeather.windSpeed, 6.42);
       expect(aRealWeather.windGust, 9.22);
-      expect(aRealWeather.conditionCode, 802);
-      expect(aRealWeather.conditionMain, 'Clouds');
-      expect(aRealWeather.conditionDescription, 'scattered clouds');
+      expect(aRealWeather.conditions.first.conditionCode, 802);
+      expect(aRealWeather.conditions.first.conditionMain, 'Clouds');
+      expect(aRealWeather.conditions.first.conditionDescription, 'scattered clouds');
       expect(aRealWeather.windSpeed, 6.42);
       expect(aRealWeather.windGust, 9.22);
     });

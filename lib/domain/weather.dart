@@ -1,3 +1,5 @@
+import 'package:weather_demo/domain/weather_condition.dart';
+
 import '../utils/numbers.dart';
 
 class Weather {
@@ -10,9 +12,7 @@ class Weather {
   double? longitude;
   
   // Weather conditions
-  int? conditionCode;
-  String? conditionMain;
-  String? conditionDescription;
+  List<WeatherCondition> conditions = [];
 
   // Parameters
   double? temperature;
@@ -51,9 +51,13 @@ class Weather {
       }
     }
     if (data.containsKey('weather')) {
-      if (data['weather'][0].containsKey('id')) conditionCode = data['weather'][0]['id'];
-      if (data['weather'][0].containsKey('main')) conditionMain = data['weather'][0]['main'];
-      if (data['weather'][0].containsKey('description')) conditionDescription = data['weather'][0]['description'];
+      data['weather'].forEach((element) {
+        final condition = WeatherCondition();
+        if (element.containsKey('id')) condition.conditionCode = element['id'];
+        if (element.containsKey('main')) condition.conditionMain = element['main'];
+        if (element.containsKey('description')) condition.conditionDescription = element['description'];
+        conditions.add(condition);
+      });
     }
     if (data.containsKey('main')) {
       if (data['main'].containsKey('temp')) {
